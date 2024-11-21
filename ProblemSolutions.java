@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Piotr Slezak / Section 1
  *
  *   This java file contains the problem solutions for the methods selectionSort,
  *   mergeSortDivisibleByKFirst, asteroidsDestroyed, and numRescueCanoes methods.
@@ -8,6 +8,8 @@
  ********************************************************************/
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.PriorityQueue;
 
 public class ProblemSolutions {
 
@@ -28,19 +30,36 @@ public class ProblemSolutions {
      *                        to not be passed and defaulting to 'true (or ascending sort).
      */
 
-    public  void selectionSort(int[] values) {
+    public void selectionSort(int[] values) {
         selectionSort(values, true);
     }
 
     public static void selectionSort(int[] values, boolean ascending ) {
-
         int n = values.length;
 
         for (int i = 0; i < n - 1; i++) {
+            int location = i; //if no swapping is needed, swaps with itself.
+            int findMaxOrMin = values[i]; //makes max or min the current value
 
-            // YOU CODE GOES HERE -- COMPLETE THE INNER LOOP OF THIS
-            // "SELECTION SORT" ALGORITHM.
-            // DO NOT FORGET TO ADD YOUR NAME / SECTION ABOVE
+            for(int j = i + 1; j < n; j++){
+                if(ascending){
+                    if(values[j] < findMaxOrMin){ //finds smallest
+                        findMaxOrMin = values[j];
+                        location = j; //keeps track of location of smallest
+                    }
+                } else {
+                    if(values[j] > findMaxOrMin){ //finds biggest
+                        findMaxOrMin = values[j];
+                        location = j; //keeps track of biggest
+                    }
+                }
+            } //end of nested loop
+
+                //swaps the two values
+                int temp = values[location];
+                values[location] = values[i];
+                values[i] = temp;
+
 
         }
 
@@ -92,15 +111,15 @@ public class ProblemSolutions {
 
     private void mergeDivisbleByKFirst(int arr[], int k, int left, int mid, int right)
     {
-        // YOUR CODE GOES HERE, THIS METHOD IS NO MORE THAN THE STANDARD MERGE PORTION
-        // OF A MERGESORT, EXCEPT THE NUMBERS DIVISIBLE BY K MUST GO FIRST WITHIN THE
-        // SEQUENCE PER THE DISCUSSION IN THE PROLOGUE ABOVE.
-        //
+
+
+
+
+
         // NOTE: YOU CAN PROGRAM THIS WITH A SPACE COMPLEXITY OF O(1) OR O(N LOG N).
         // AGAIN, THIS IS REFERRING TO SPACE COMPLEXITY. O(1) IS IN-PLACE, O(N LOG N)
-        // ALLOCATES AUXILIARY DATA STRUCTURES (TEMPORARY ARRAYS). IT WILL BE EASIER
-        // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
-        // OF THIS PROGRAMMING EXERCISES.
+        // ALLOCATES AUXILIARY DATA STRUCTURES (TEMPORARY ARRAYS).
+
 
         return;
 
@@ -154,9 +173,16 @@ public class ProblemSolutions {
 
     public static boolean asteroidsDestroyed(int mass, int[] asteroids) {
 
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT()
+        Arrays.sort(asteroids); //sorts asteroids by size
 
-        return false;
+        for(int asteroid : asteroids){
+            if(mass >= asteroid){ //checks if current asteroid is smaller than the planet
+                mass += asteroid; //increases mass of planet
+            } else {
+                return false; //won't run if all asteroids are smaller
+            }
+        }
+        return true;
 
     }
 
@@ -192,9 +218,29 @@ public class ProblemSolutions {
 
     public static int numRescueSleds(int[] people, int limit) {
 
-        // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT
+        Arrays.sort(people);
+        int sleds = 0;
+        int back = people.length - 1;
+        int front = 0;
 
-        return -1;
+        while(front <= back){ //iterates until all people are checked
+
+            if(people[back] > limit){ //returns -1 if sled cannot carry the largest person
+                return -1;
+            }
+
+            if(people[front] + people[back] <= limit){ //checks if combined weights <= limit
+                front++; //moves up array
+                back--; //moves down array
+                sleds++; //takes sled
+            } else {
+                back--; //only takes largest person
+                sleds++; //takes sled
+            }
+
+        }
+
+        return sleds;
 
     }
 
